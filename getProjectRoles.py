@@ -1,12 +1,25 @@
 from jira import JIRA
 import pickle
-
+import sys
 
 def main():
     i = 0
     jira = JIRA("http://localhost:8080", basic_auth=('pro', 'pro'))
 
-    groups = jira.groups(maxResults=250)
+    projects = jira.projects()
+
+    for project in projects:
+        print("Project Name: " + project.name)
+        roles = jira.project_roles(project)
+
+        for role in roles:
+            print("Role Name: " + role)
+
+            the_role = jira.project_role(project, role)
+            for actor in role.actors:
+                print("Actor Name: " + actor)
+
+    sys.exit(42)
 
     my_array = []
 
